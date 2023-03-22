@@ -1,0 +1,1 @@
+/Users/hkhchichine/Documents/Personal/rust-projects/rust-grepcli/target/debug/rust-grepcli: /Users/hkhchichine/Documents/Personal/rust-projects/rust-grepcli/src/lib.rs /Users/hkhchichine/Documents/Personal/rust-projects/rust-grepcli/src/main.rs
