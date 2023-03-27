@@ -1,11 +1,9 @@
 use std::env;
-use std::fs;
-use std::io::ErrorKind;
-use rust_grepcli::parse_config;
+use std::process;
+
+use rust_grepcli::{Config, run};
 
 fn main() {
-    println!("Hello, world!");
-
     // let mut args = env::args().peekable();
 
     // while args.peek().is_some() {
@@ -16,13 +14,17 @@ fn main() {
     // `collect` is one of the few methods un Rust that we need to annotate types as it can't be inferred
     let args_collection: Vec<String> = env::args().collect();
 
-    let config = parse_config(&args_collection);
-
-    println!("Searching for {}", config.query);
-    println!("In file {}", config.file_path);
+    let config = Config::build(&args_collection).unwrap_or_else(|err| {
+        println!("Problem parsing arguments: {err}");
+        process::exit(1);
+    });
 
     // dbg!(args_collection);
 
-    let file_as_string = fs::read_to_string(config.file_path).expect("e");
-    println!("file as string {}", file_as_string);
+    // Because `run` doesn't return a value we only care about 
+    // detecting the error, so we don't need the `unwrap_or_else` to return unwrapped values
+    if let Err(e) = run(config) {
+        println!("Application error: {e}");
+        process::exit(1);
+    }
 }
